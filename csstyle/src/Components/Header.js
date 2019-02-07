@@ -1,9 +1,9 @@
 import React from 'react';
-import {SideNav, SideNavItem, Button, Icon, Row, Col, Modal} from 'react-materialize'
+import {SideNav, SideNavItem, Button, Row, Col, Modal} from 'react-materialize'
 import CreateSnippet from './CreateSnippet'
 
 const Header = ({handleSubmit, handleChange, snippetForm}) => (
-  <Row>
+  <Row style={{background: '#333', height: '75px', padding:'15px'}}>
     <Col s={1}>
       <SideNav
         trigger={<Button icon='menu'></Button>}
@@ -24,10 +24,10 @@ const Header = ({handleSubmit, handleChange, snippetForm}) => (
         <SideNavItem waves href='#!third'>Third Link With Waves</SideNavItem>
       </SideNav>
     </Col>
-    <Col s={1} offset={"s10"}>
+    <Col s={3} offset={"s8"}>
       <Modal
         header='Modal Header'
-        trigger={<Button icon='add'></Button>}>
+        trigger={<Button> New Snippet</Button>}>
         <Row>
           <CreateSnippet snippetForm={snippetForm} handleChange={handleChange} handleSubmit={handleSubmit} />
         </Row>

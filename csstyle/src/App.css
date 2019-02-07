@@ -34,3 +34,7 @@
 .show-code {
   min-height: 25vh;
 }
+
+body {
+  background-color: #f1f1f1;
+}

@@ -1,8 +1,9 @@
 import React from 'react';
-import {CollapsibleItem, CardPanel, Row, Col} from 'react-materialize'
+import {CollapsibleItem, CardPanel, Row, Col, Tag} from 'react-materialize'
+import SnippetHeader from './SnippetHeader'
 
 const Snippet = ({snippet}) => (
-  <CollapsibleItem header={snippet.name}>
+  <CollapsibleItem onSelect={()=>{}} header={<SnippetHeader snippet={snippet}/>}>
     <Row>
       <Col s={4} offset={'s2'}>
         <CardPanel className="teal lighten-4 black-text show-code">

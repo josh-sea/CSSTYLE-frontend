@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Header from './Components/Header'
+import {Row, Col} from 'react-materialize'
 import SnippetContainer from './Containers/SnippetContainer'
-import {Button, Icon} from 'react-materialize'
 
 
 class App extends Component {
@@ -50,7 +49,7 @@ class App extends Component {
             css: '',
             user_id: ''
           }
-        })
+        },()=>{document.querySelector('.btn.waves-effect.waves-light.btn-flat.modal-action.modal-close').click()})
       })
     })
 
@@ -69,7 +68,11 @@ class App extends Component {
     return (
       <div className="App">
         <Header snippetForm={this.state.snippetForm} handleChange={this.handleChange} handleSubmit={this.handleSubmit} />
-        <SnippetContainer snippets={this.state.snippets}/>
+        <Row>
+          <Col s={10} offset={'s1'}>
+            <SnippetContainer snippets={this.state.snippets}/>
+        </Col>
+      </Row>
       </div>
     );
   }

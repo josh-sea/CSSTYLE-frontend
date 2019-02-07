@@ -3,13 +3,11 @@ import Snippet from '../Components/Snippet'
 import {Collapsible} from 'react-materialize'
 
 const SnippetContainer = ({snippets}) => (
-  <div>
-    <Collapsible>
+    <Collapsible popout defaultActiveKey={1}>
       {snippets.map((snippet) => {
-        return <Snippet snippet={snippet} />
+        return <Snippet key={snippet.id} snippet={snippet} />
       })}
     </Collapsible>
-  </div>
 );
 
 export default SnippetContainer;
