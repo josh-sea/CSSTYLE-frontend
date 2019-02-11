@@ -1,5 +1,5 @@
 import React from 'react'
-import {Input, Col, Button, Row, Tag} from 'react-materialize'
+import {Input, Col, Button, Row} from 'react-materialize'
 
 
 const CreateSnippet = ({handleSubmit, handleChange, snippetForm})=>{
@@ -13,6 +13,9 @@ const CreateSnippet = ({handleSubmit, handleChange, snippetForm})=>{
             </Col>
             <Col s={4}>
               <Input onChange={handleChange} s={12} type="number" label="User ID" value={snippetForm.user_id} id="user_id"/>
+            </Col>
+            <Col s={12}>
+              <Input onChange={handleChange} label="Comma seperated tags" s={12} value={snippetForm.tags} id="tags"/>
             </Col>
             <Col s={12}>
               <Input onChange={handleChange} type="textarea" label="HTML" s={12} value={snippetForm.html} id="html"/>

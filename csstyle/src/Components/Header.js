@@ -1,27 +1,32 @@
-import React from 'react';
-import {SideNav, SideNavItem, Button, Row, Col, Modal} from 'react-materialize'
+import React, {Fragment} from 'react';
+import {SideNav, SideNavItem, Button, Row, Col, Modal, Input} from 'react-materialize'
 import CreateSnippet from './CreateSnippet'
+import CreateUser from './CreateUser'
+import Login from './Login'
+import Sidebar from './Sidebar'
+import { Link } from 'react-router-dom'
 
-const Header = ({handleSubmit, handleChange, snippetForm}) => (
+const Header = ({currentuser, handleSubmit, handleChange, snippetForm, authenticated, toggleLoginForm, loginToggled, loginUsername, handleLoginUsername, signIn, handleRegister}) => (
   <Row style={{background: '#333', height: '75px', padding:'15px'}}>
     <Col s={1}>
       <SideNav
         trigger={<Button icon='menu'></Button>}
         options={{ closeOnClick: true }}
         >
+        {!authenticated && <Button onClick={toggleLoginForm}>{loginToggled ? "Register" : "Login"}</Button>}
+        {!loginToggled && !authenticated && <CreateUser handleRegister={handleRegister} loginUsername={loginUsername} handleLoginUsername={handleLoginUsername}/>}
+        {loginToggled && !authenticated && <Login loginUsername={loginUsername} signIn={signIn} handleLoginUsername={handleLoginUsername} />}
+        {authenticated && <Fragment>
         <SideNavItem userView
           user={{
-            background: 'img/office.jpg',
-            image: 'img/yuna.jpg',
-            name: 'John Doe',
-            email: 'jdandturk@gmail.com'
+            background: 'https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1000&q=80',
+            image: currentuser.user_image,
+            name: currentuser.username
           }}
         />
-        <SideNavItem href='#!icon' icon='cloud'>First Link With Icon</SideNavItem>
-        <SideNavItem href='#!second'>Second Link</SideNavItem>
-        <SideNavItem divider />
-        <SideNavItem subheader>Subheader</SideNavItem>
-        <SideNavItem waves href='#!third'>Third Link With Waves</SideNavItem>
+        <Link to='/'>Home</Link>
+        <Link to='/user'>View My Snippets</Link>
+        </Fragment>}
       </SideNav>
     </Col>
     <Col s={3} offset={"s8"}>
@@ -33,6 +38,7 @@ const Header = ({handleSubmit, handleChange, snippetForm}) => (
         </Row>
       </Modal>
     </Col>
+
   </Row>
 );
 

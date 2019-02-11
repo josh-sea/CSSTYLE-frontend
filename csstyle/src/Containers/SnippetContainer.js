@@ -5,7 +5,7 @@ import {Collapsible} from 'react-materialize'
 const SnippetContainer = ({snippets}) => (
     <Collapsible popout defaultActiveKey={1}>
       {snippets.map((snippet) => {
-        return <Snippet key={snippet.id} snippet={snippet} />
+        return <Snippet key={snippet.id} snippet={snippet}/>
       })}
     </Collapsible>
 );
