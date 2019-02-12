@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import { SideNav, SideNavItem, Button, Icon } from 'react-materialize'
+import { SideNav, SideNavItem, Button } from 'react-materialize'
 import CreateUser from './CreateUser'
 import Login from './Login'
 

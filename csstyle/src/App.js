@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
 import Header from './Components/Header'
-import {Row, Col, Input} from 'react-materialize'
+import {Row, Col} from 'react-materialize'
 import SnippetContainer from './Containers/SnippetContainer'
-import Login from './Components/Login'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-
+import SnippetView from './Components/SnippetView'
 
 class App extends Component {
   state={
     snippets: [],
     userSnippets: [],
+    selectedSnippet: {},
     snippetForm: {
       name: '',
       html: '',
@@ -110,7 +110,6 @@ class App extends Component {
     })
     .then(r=>r.json())
     .then(r=> {
-      console.log(r)
       this.setState({ authenticated: r.success, currentuser: r.user, userSnippets: r.snippets})
     })
   }
@@ -134,6 +133,13 @@ class App extends Component {
       })
     }
 
+    handleSnippetSelect = e => {
+      const selectedSnippet = this.state.snippets.find(snippet =>{
+        return snippet.id === e.target.snippetId
+      })
+      this.setState({selectedSnippet})
+    }
+
   render() {
 
     return (
@@ -152,7 +158,11 @@ class App extends Component {
               />}
               {this.state.authenticated && <Route
                 exact path='/user'
-                render={() => <SnippetContainer snippets={this.state.userSnippets} />}
+                render={() => <SnippetContainer snippets={this.state.userSnippets} user={this.state.currentuser} />}
+              />}
+              {this.state.authenticated && <Route
+                exact path='/snippet/:id'
+                render={props => <SnippetView snippets={this.state.snippets} snippetId={parseInt(props.match.params.id)}/>}
               />}
             </Col>
           </Row>

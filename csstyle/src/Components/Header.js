@@ -1,9 +1,8 @@
 import React, {Fragment} from 'react';
-import {SideNav, SideNavItem, Button, Row, Col, Modal, Input} from 'react-materialize'
+import {SideNav, SideNavItem, Button, Row, Col, Modal} from 'react-materialize'
 import CreateSnippet from './CreateSnippet'
 import CreateUser from './CreateUser'
 import Login from './Login'
-import Sidebar from './Sidebar'
 import { Link } from 'react-router-dom'
 
 const Header = ({currentuser, handleSubmit, handleChange, snippetForm, authenticated, toggleLoginForm, loginToggled, loginUsername, handleLoginUsername, signIn, handleRegister}) => (
