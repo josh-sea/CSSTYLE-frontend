@@ -8,11 +8,8 @@ const CreateSnippet = ({handleSubmit, handleChange, snippetForm})=>{
 
         <form onSubmit={handleSubmit}>
           <Row>
-            <Col s={8}>
+            <Col s={12}>
               <Input onChange={handleChange} s={12} label="Snippet Name" value={snippetForm.name} id="name" />
-            </Col>
-            <Col s={4}>
-              <Input onChange={handleChange} s={12} type="number" label="User ID" value={snippetForm.user_id} id="user_id"/>
             </Col>
             <Col s={12}>
               <Input onChange={handleChange} label="Comma seperated tags" s={12} value={snippetForm.tags} id="tags"/>

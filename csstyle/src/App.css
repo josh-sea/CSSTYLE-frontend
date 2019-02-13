@@ -38,3 +38,7 @@
 body {
   background-color: #f1f1f1;
 }
+.codebox{
+  outline:none;
+  word-wrap: break-word;
+}
