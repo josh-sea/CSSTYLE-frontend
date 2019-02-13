@@ -67,7 +67,7 @@ export default class Snippet extends Component {
   render(){
 
     return(
-      <CollapsibleItem onSelect={()=>{}} header={<SnippetHeader snippet={this.props.snippet}/>}>
+      <CollapsibleItem onSelect={()=>{}} header={<SnippetHeader clickTag={this.props.clickTag} snippet={this.props.snippet}/>}>
         {!this.props.user &&
           <Row>
             <Col s={6}>
@@ -124,5 +124,6 @@ export default class Snippet extends Component {
 
 const controlOverflow ={
   overflow: 'scroll',
-  maxHeight: '50vh'
+  maxHeight: '50vh',
+  resize: 'both',
 }

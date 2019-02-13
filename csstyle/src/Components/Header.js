@@ -5,7 +5,7 @@ import CreateUser from './CreateUser'
 import Login from './Login'
 import { Link } from 'react-router-dom'
 
-const Header = ({currentuser, handleKeyPress, handleSubmit, handleChange, snippetForm, authenticated, toggleLoginForm, loginToggled, loginUsername, handleLoginUsername, signIn, handleRegister}) => (
+const Header = ({currentuser, handleLogOut, handleKeyPress, handleSubmit, handleChange, snippetForm, authenticated, toggleLoginForm, loginToggled, loginUsername, handleLoginUsername, signIn, handleRegister}) => (
   <Row style={{background: '#333', height: '75px', padding:'15px'}}>
     <Col s={1}>
       <SideNav
@@ -25,7 +25,8 @@ const Header = ({currentuser, handleKeyPress, handleSubmit, handleChange, snippe
         />
         <Link to='/'>Home</Link>
         <Link to='/user'>Edit My Snippets</Link>
-        <Button style={{marginTop:'50vh'}}>Log out</Button>
+        <Link style={{marginTop:'50vh'}} to='/'><Button onClick={handleLogOut}>Log out</Button>
+        </Link>
         </Fragment>}
       </SideNav>
     </Col>
