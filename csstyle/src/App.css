@@ -40,4 +40,5 @@ body {
 }
 .codebox{
   outline:none;
+  word-wrap: break-word;
 }

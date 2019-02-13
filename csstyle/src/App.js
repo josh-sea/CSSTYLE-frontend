@@ -23,7 +23,6 @@ class App extends Component {
     loginUsername: {username: '', image: ''},
     currentuser: null,
   }
-
   componentDidMount(){
     fetch("http://localhost:9000/api/v1/snippets")
     .then(r=>r.json())
@@ -43,12 +42,12 @@ class App extends Component {
         "Content-Type": "application/json",
         Accept: "application/json"
       },
-      body: JSON.stringify(this.state.snippetForm)
+      body: JSON.stringify({...this.state.snippetForm, user_id: this.state.currentuser.id})
     })
     .then(r=>r.json())
     .then(data => {
       this.setState(prevState=>{
-        return {snippets: [data, ...prevState.snippets]}
+        return {snippets: [data, ...prevState.snippets], userSnippets: [data, ...prevState.userSnippets] }
       }, () => {
         this.setState({
           snippetForm: {
@@ -58,7 +57,8 @@ class App extends Component {
             user_id: '',
             tags: ''
           }
-        },()=>{document.querySelector('.btn.waves-effect.waves-light.btn-flat.modal-action.modal-close').click()})
+        },()=>{
+          document.querySelector('.btn.waves-effect.waves-light.btn-flat.modal-action.modal-close').click()})
       })
     })
 
@@ -140,6 +140,44 @@ class App extends Component {
       this.setState({selectedSnippet})
     }
 
+    updateSnippet = (response) =>{
+      const snippets = this.state.snippets.map(snippet=>{
+        if(snippet.id === response.id){
+          return response
+        } else {
+          return snippet
+        }
+      })
+      this.setState({snippets})
+      const userSnippets = this.state.userSnippets.map(snippet=>{
+        if(snippet.id === response.id){
+          return response
+        } else {
+          return snippet
+        }
+      })
+      this.setState({userSnippets})
+    }
+
+    deleteSnippet = (response) => {
+      const snippets = this.state.snippets.filter(snippet=>{
+        if(snippet.id === response.id){
+          return false
+        } else {
+          return true
+        }
+      })
+      this.setState({snippets})
+      const userSnippets = this.state.userSnippets.filter(snippet=>{
+        if(snippet.id === response.id){
+          return false
+        } else {
+          return true
+        }
+      })
+      this.setState({userSnippets})
+    }
+
   render() {
 
     return (
@@ -148,22 +186,18 @@ class App extends Component {
           <Header currentuser={this.state.currentuser} handleRegister={this.handleRegister} signIn={this.signIn} handleLoginUsername={this.handleLoginUsername} loginUsername={this.state.loginUsername} loginToggled={this.state.loginToggled} authenticated={this.state.authenticated} toggleLoginForm={this.toggleLoginForm} snippetForm={this.state.snippetForm} handleChange={this.handleChange} handleSubmit={this.handleSubmit} />
           <Row>
             <Col s={10} offset={'s1'}>
-              {this.state.authenticated && <Route
+              <Route
                 exact path='/'
-                render={() => <SnippetContainer snippets={this.state.snippets} />}
-              />}
-              {!this.state.authenticated && <Route
-                exact path='/'
-                render={() => <div>hello</div>}
-              />}
+                render={() => <SnippetContainer deleteSnippet={this.deleteSnippet} updateSnippet={this.updateSnippet} snippets={this.state.snippets} />}
+              />
               {this.state.authenticated && <Route
                 exact path='/user'
-                render={() => <SnippetContainer snippets={this.state.userSnippets} user={this.state.currentuser} />}
+                render={() => <SnippetContainer deleteSnippet={this.deleteSnippet} updateSnippet={this.updateSnippet} snippets={this.state.userSnippets} user={this.state.currentuser} />}
               />}
-              {this.state.authenticated && <Route
+              <Route
                 exact path='/snippet/:id'
                 render={props => <SnippetView snippets={this.state.snippets} snippetId={parseInt(props.match.params.id)}/>}
-              />}
+              />
             </Col>
           </Row>
         </div>

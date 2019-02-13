@@ -4,10 +4,9 @@ import SnippetHeader from './SnippetHeader'
 import { Link } from 'react-router-dom'
 import ContentEditable from 'react-contenteditable'
 
-
 export default class Snippet extends Component {
   escapeHtml = (unsafe) => {
-    return unsafe.replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    return unsafe.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/<br>/, "")
   }
 
   unescapeHtml = (safe) => {
@@ -45,9 +44,16 @@ export default class Snippet extends Component {
       })
     })
     .then(r=>r.json())
-    .then(console.log)
+    .then(r=>this.props.updateSnippet(r))
   }
 
+  handleDelete=()=>{
+    fetch(`http://localhost:9000/api/v1/snippets/${this.props.snippet.id}`, {
+      method: 'DELETE'
+    })
+    .then(r=>r.json())
+    .then(r=>this.props.deleteSnippet(r))
+  }
 
   render(){
 
@@ -55,12 +61,14 @@ export default class Snippet extends Component {
       <CollapsibleItem onSelect={()=>{}} header={<SnippetHeader snippet={this.props.snippet}/>}>
         {!this.props.user &&
           <Row>
-            <Col s={4} offset={'s2'}>
+            <Col s={6}>
+              <h5 style={{margin: 'none'}}>HTML</h5>
               <CardPanel className="blue lighten-4 black-text show-code">
                 <code className="codebox">{this.props.snippet.html}</code>
               </CardPanel>
             </Col>
-            <Col s={4}>
+            <Col s={6}>
+              <h5 style={{margin: 'none'}}>CSS</h5>
               <CardPanel className="yellow lighten-4 black-text show-code">
                 <code className="codebox">{this.props.snippet.css}</code>
               </CardPanel>
@@ -70,7 +78,8 @@ export default class Snippet extends Component {
           {this.props.user &&
             <Row>
               <Col s={4} offset={'s2'}>
-                <CardPanel className="blue lighten-4 black-text show-code">
+                <h5 style={{margin: 'none'}}>HTML</h5>
+                <CardPanel style={controlOverflow} className="blue lighten-4 black-text show-code">
                   <ContentEditable
                     html={this.escapeHtml(this.state.snippetHTML)} // innerHTML of the editable div
                     disabled={false}       // use true to disable editing
@@ -81,7 +90,8 @@ export default class Snippet extends Component {
                 </CardPanel>
               </Col>
               <Col s={4}>
-                <CardPanel className="yellow lighten-4 black-text show-code">
+                <h5 style={{margin: 'none'}}>CSS</h5>
+                <CardPanel style={controlOverflow} className="yellow lighten-4 black-text show-code">
                   <ContentEditable
                     html={this.state.snippetCSS} // innerHTML of the editable div
                     disabled={false}       // use true to disable editing
@@ -94,10 +104,15 @@ export default class Snippet extends Component {
             </Row>
           }
           <Link to={`/snippet/${this.props.snippet.id}`}>
-            <Button icon='mode_edit'>View</Button>
+            <Button>View</Button>
           </Link>
-        <Button onClick={this.handleSubmit}>Save</Button>
+        {this.props.user && <Button waves='purple' onClick={this.handleSubmit}>Save</Button>}
+        {this.props.user && <Button waves='purple' onClick={this.handleDelete}>Delete</Button>}
       </CollapsibleItem>
     )
   }
+}
+
+const controlOverflow ={
+  overflow: 'scroll',
 }

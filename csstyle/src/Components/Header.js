@@ -31,7 +31,7 @@ const Header = ({currentuser, handleSubmit, handleChange, snippetForm, authentic
     <Col s={3} offset={"s8"}>
       <Modal
         header='Modal Header'
-        trigger={<Button> New Snippet</Button>}>
+        trigger={currentuser && <Button> New Snippet</Button>}>
         <Row>
           <CreateSnippet snippetForm={snippetForm} handleChange={handleChange} handleSubmit={handleSubmit} />
         </Row>

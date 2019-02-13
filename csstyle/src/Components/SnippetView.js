@@ -1,23 +1,26 @@
 import React from 'react'
 import { Row, Col } from 'react-materialize'
+import ContentEditable from 'react-contenteditable'
+import Iframe from 'react-iframe'
 
 
 const SnippetView = ({snippetId, snippets}) => {
   const div = {
-    height: '100%',
+    height: '40vh',
     width: '100%',
-    background: '#333',
-    border: '5px solid teal',
+    padding: '5%',
+    background: 'rgb(48,48,48)',
+    border: '3px solid teal',
     color: 'white',
     borderRadius: '12px',
     overflow: 'scroll',
   }
 
   const bottomDiv = {
+    height: '40vh',
     width: '100%',
-    hieght: '50%',
     marginTop: '2%',
-    background: '#333',
+    background: 'white',
     border: '5px solid teal',
     color: 'white',
     borderRadius: '12px',
@@ -25,31 +28,41 @@ const SnippetView = ({snippetId, snippets}) => {
   }
 
   const foundSnippet = () => {
-    return snippets.find(snip =>{
+    let returnSnip = snippets.find(snip =>{
       return snip.id === snippetId
     })
+    return returnSnip
   }
-//console.log(snippet);
     return (
       <Row>
         <Col s={6}>
           <div style={div}>
             {
-            foundSnippet().html
+            (snippets.length>0) && foundSnippet().html
             }
           </div>
         </Col>
         <Col s={6}>
           <div style={div}>
           {
-          foundSnippet().css
+          (snippets.length>0) && foundSnippet().css
           }
           </div>
         </Col>
         <Col s={12}>
           <div style={bottomDiv}>
+          <Iframe url={`http://localhost:9000/api/v1/render/${snippetId}`}
+            width="100%"
+            height="90%"
+            id="myId"
+            className="myClassname"
+            display="initial"
+            position="relative"
+            allowFullScreen>
+          </Iframe>
           </div>
         </Col>
+
       </Row>
 
 
