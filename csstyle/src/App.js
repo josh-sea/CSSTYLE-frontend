@@ -178,12 +178,18 @@ class App extends Component {
       this.setState({userSnippets})
     }
 
+    handleKeyPress = e => {
+      if (e.charCode === 13){
+        this.signIn()
+      }
+    }
+
   render() {
 
     return (
       <Router>
         <div className="App">
-          <Header currentuser={this.state.currentuser} handleRegister={this.handleRegister} signIn={this.signIn} handleLoginUsername={this.handleLoginUsername} loginUsername={this.state.loginUsername} loginToggled={this.state.loginToggled} authenticated={this.state.authenticated} toggleLoginForm={this.toggleLoginForm} snippetForm={this.state.snippetForm} handleChange={this.handleChange} handleSubmit={this.handleSubmit} />
+          <Header handleKeyPress={this.handleKeyPress} currentuser={this.state.currentuser} handleRegister={this.handleRegister} signIn={this.signIn} handleLoginUsername={this.handleLoginUsername} loginUsername={this.state.loginUsername} loginToggled={this.state.loginToggled} authenticated={this.state.authenticated} toggleLoginForm={this.toggleLoginForm} snippetForm={this.state.snippetForm} handleChange={this.handleChange} handleSubmit={this.handleSubmit} />
           <Row>
             <Col s={10} offset={'s1'}>
               <Route

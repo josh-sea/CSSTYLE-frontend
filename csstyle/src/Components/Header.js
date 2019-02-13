@@ -5,7 +5,7 @@ import CreateUser from './CreateUser'
 import Login from './Login'
 import { Link } from 'react-router-dom'
 
-const Header = ({currentuser, handleSubmit, handleChange, snippetForm, authenticated, toggleLoginForm, loginToggled, loginUsername, handleLoginUsername, signIn, handleRegister}) => (
+const Header = ({currentuser, handleKeyPress, handleSubmit, handleChange, snippetForm, authenticated, toggleLoginForm, loginToggled, loginUsername, handleLoginUsername, signIn, handleRegister}) => (
   <Row style={{background: '#333', height: '75px', padding:'15px'}}>
     <Col s={1}>
       <SideNav
@@ -14,7 +14,7 @@ const Header = ({currentuser, handleSubmit, handleChange, snippetForm, authentic
         >
         {!authenticated && <Button onClick={toggleLoginForm}>{loginToggled ? "Register" : "Login"}</Button>}
         {!loginToggled && !authenticated && <CreateUser handleRegister={handleRegister} loginUsername={loginUsername} handleLoginUsername={handleLoginUsername}/>}
-        {loginToggled && !authenticated && <Login loginUsername={loginUsername} signIn={signIn} handleLoginUsername={handleLoginUsername} />}
+        {loginToggled && !authenticated && <Login handleKeyPress={handleKeyPress} loginUsername={loginUsername} signIn={signIn} handleLoginUsername={handleLoginUsername} />}
         {authenticated && <Fragment>
         <SideNavItem userView
           user={{
@@ -24,17 +24,17 @@ const Header = ({currentuser, handleSubmit, handleChange, snippetForm, authentic
           }}
         />
         <Link to='/'>Home</Link>
-        <Link to='/user'>View My Snippets</Link>
+        <Link to='/user'>Edit My Snippets</Link>
+        <Button style={{marginTop:'50vh'}}>Log out</Button>
         </Fragment>}
       </SideNav>
     </Col>
     <Col s={3} offset={"s8"}>
       <Modal
+      style={{magin: 'none'}}
         header='Modal Header'
         trigger={currentuser && <Button> New Snippet</Button>}>
-        <Row>
-          <CreateSnippet snippetForm={snippetForm} handleChange={handleChange} handleSubmit={handleSubmit} />
-        </Row>
+        <CreateSnippet snippetForm={snippetForm} handleChange={handleChange} handleSubmit={handleSubmit} />
       </Modal>
     </Col>
 

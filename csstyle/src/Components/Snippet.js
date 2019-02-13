@@ -55,6 +55,15 @@ export default class Snippet extends Component {
     .then(r=>this.props.deleteSnippet(r))
   }
 
+  slicer = (input) => {
+    const slicedInput=input.slice(0,100);
+    if (slicedInput.length<input.length){
+      return slicedInput+"..."
+    }else{
+      return input
+    }
+  }
+
   render(){
 
     return(
@@ -63,21 +72,21 @@ export default class Snippet extends Component {
           <Row>
             <Col s={6}>
               <h5 style={{margin: 'none'}}>HTML</h5>
-              <CardPanel className="blue lighten-4 black-text show-code">
-                <code className="codebox">{this.props.snippet.html}</code>
+              <CardPanel style={controlOverflow} className="blue lighten-4 black-text show-code">
+                <code className="codebox">{this.slicer(this.props.snippet.html)}</code>
               </CardPanel>
             </Col>
             <Col s={6}>
               <h5 style={{margin: 'none'}}>CSS</h5>
-              <CardPanel className="yellow lighten-4 black-text show-code">
-                <code className="codebox">{this.props.snippet.css}</code>
+              <CardPanel style={controlOverflow} className="yellow lighten-4 black-text show-code">
+                <code className="codebox">{this.slicer(this.props.snippet.css)}</code>
               </CardPanel>
             </Col>
           </Row>
           }
           {this.props.user &&
             <Row>
-              <Col s={4} offset={'s2'}>
+              <Col s={6}>
                 <h5 style={{margin: 'none'}}>HTML</h5>
                 <CardPanel style={controlOverflow} className="blue lighten-4 black-text show-code">
                   <ContentEditable
@@ -89,7 +98,7 @@ export default class Snippet extends Component {
                   />
                 </CardPanel>
               </Col>
-              <Col s={4}>
+              <Col s={6}>
                 <h5 style={{margin: 'none'}}>CSS</h5>
                 <CardPanel style={controlOverflow} className="yellow lighten-4 black-text show-code">
                   <ContentEditable
@@ -115,4 +124,5 @@ export default class Snippet extends Component {
 
 const controlOverflow ={
   overflow: 'scroll',
+  maxHeight: '50vh'
 }

@@ -1,6 +1,5 @@
 import React from 'react'
 import { Row, Col } from 'react-materialize'
-import ContentEditable from 'react-contenteditable'
 import Iframe from 'react-iframe'
 
 
@@ -25,7 +24,8 @@ const SnippetView = ({snippetId, snippets}) => {
     color: 'white',
     borderRadius: '12px',
     overflow: 'scroll',
-  }
+    resize: 'both',
+}
 
   const foundSnippet = () => {
     let returnSnip = snippets.find(snip =>{
@@ -51,9 +51,9 @@ const SnippetView = ({snippetId, snippets}) => {
         </Col>
         <Col s={12}>
           <div style={bottomDiv}>
-          <Iframe url={`http://localhost:9000/api/v1/render/${snippetId}`}
+          <Iframe url={`http://localhost:9000/api/v1/render/${snippetId}?height=whatever&width=whatever`}
             width="100%"
-            height="90%"
+            height="100%"
             id="myId"
             className="myClassname"
             display="initial"
