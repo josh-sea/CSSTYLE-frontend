@@ -11,6 +11,7 @@ class App extends Component {
     snippets: [],
     userSnippets: [],
     selectedSnippet: {},
+    searchValue: '',
     snippetForm: {
       name: '',
       html: '',
@@ -184,21 +185,58 @@ class App extends Component {
       }
     }
 
+    handleLogOut= e => {
+      this.setState({
+        userSnippets: [],
+        selectedSnippet: {},
+        snippetForm: {
+          name: '',
+          html: '',
+          css: '',
+          user_id: '',
+          tags: ''
+        },
+        authenticated: false,
+        loginToggled: true,
+        loginUsername: {username: '', image: ''},
+        currentuser: null,
+      })
+    }
+
+    handleSearch = e => {
+      this.setState({searchValue: e.target.value})
+    }
+
+    filterSnippets = (snippets) => {
+      if (this.state.searchValue===""){
+        return snippets
+      }
+      return snippets.filter(snippet=>{
+        return snippet.tags.map(tag => tag.tag_name.toLowerCase().includes(this.state.searchValue.toLowerCase())).includes(true)
+      })
+    }
+
+    clickTag = (e) => {
+      e.target.parentNode.click()
+      document.getElementById('search').focus()
+      this.setState({searchValue: e.target.innerHTML})
+    }
+
   render() {
 
     return (
       <Router>
         <div className="App">
-          <Header handleKeyPress={this.handleKeyPress} currentuser={this.state.currentuser} handleRegister={this.handleRegister} signIn={this.signIn} handleLoginUsername={this.handleLoginUsername} loginUsername={this.state.loginUsername} loginToggled={this.state.loginToggled} authenticated={this.state.authenticated} toggleLoginForm={this.toggleLoginForm} snippetForm={this.state.snippetForm} handleChange={this.handleChange} handleSubmit={this.handleSubmit} />
+          <Header handleKeyPress={this.handleKeyPress} handleLogOut={this.handleLogOut} currentuser={this.state.currentuser} handleRegister={this.handleRegister} signIn={this.signIn} handleLoginUsername={this.handleLoginUsername} loginUsername={this.state.loginUsername} loginToggled={this.state.loginToggled} authenticated={this.state.authenticated} toggleLoginForm={this.toggleLoginForm} snippetForm={this.state.snippetForm} handleChange={this.handleChange} handleSubmit={this.handleSubmit} />
           <Row>
             <Col s={10} offset={'s1'}>
               <Route
                 exact path='/'
-                render={() => <SnippetContainer deleteSnippet={this.deleteSnippet} updateSnippet={this.updateSnippet} snippets={this.state.snippets} />}
+                render={() => <SnippetContainer clickTag={this.clickTag} searchValue={this.state.searchValue} handleSearch={this.handleSearch} deleteSnippet={this.deleteSnippet} updateSnippet={this.updateSnippet} snippets={this.filterSnippets(this.state.snippets)} />}
               />
               {this.state.authenticated && <Route
                 exact path='/user'
-                render={() => <SnippetContainer deleteSnippet={this.deleteSnippet} updateSnippet={this.updateSnippet} snippets={this.state.userSnippets} user={this.state.currentuser} />}
+                render={() => <SnippetContainer clickTag={this.clickTag} searchValue={this.state.searchValue} handleSearch={this.handleSearch} deleteSnippet={this.deleteSnippet} updateSnippet={this.updateSnippet} snippets={this.filterSnippets(this.state.userSnippets)} user={this.state.currentuser} />}
               />}
               <Route
                 exact path='/snippet/:id'
