@@ -232,11 +232,33 @@ class App extends Component {
         this.setState({styleSheet})
       })
     }
+    saveData = (function () {
+        var a = document.createElement("a");
+        document.body.appendChild(a);
+        a.style = "display: none";
+        return function (data, fileName) {
+            var blob = new Blob([data], {type: "octet/stream"}),
+                url = window.URL.createObjectURL(blob);
+            a.href = url;
+            a.download = fileName;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        };
+    }());
 
     downloadCSS = e => {
       console.log(e.target.id);
-      fetch(`${BASEURL}/api/v1/snippets/${e.target.id}/stylesheet`)
-      .then(console.log)
+      e.persist()
+      fetch(`${BASEURL}/api/v1/snippets/${e.target.id}/stylesheet.css`)
+      .then(r=>r.json())
+      .then(d=>{
+        fetch(d.filename)
+        .then(res=>res.text())
+        .then(data=>{
+          let fn = `snippet_${e.target.id}_stylesheet.css`
+          this.saveData(data, fn)
+        })
+      })
     }
 
 
