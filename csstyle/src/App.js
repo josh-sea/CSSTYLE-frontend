@@ -12,7 +12,7 @@ class App extends Component {
   state={
     snippets: [],
     userSnippets: [],
-    styleSheet: {},
+    styleSheet: {filename: ''},
     selectedSnippet: {},
     searchValue: '',
     snippetForm: {
@@ -234,9 +234,17 @@ class App extends Component {
     }
 
     downloadCSS = e => {
-      console.log(e.target.id);
+      e.persist()
       fetch(`${BASEURL}/api/v1/snippets/${e.target.id}/stylesheet`)
-      .then(console.log)
+      .then(r=>r.json())
+      .then(data=>{
+        const a = window.document.createElement('a');
+        a.href = window.URL.createObjectURL(new Blob([data.css], {type: 'text/css'}));
+        a.download = `snippet_${e.target.id}.css`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      })
     }
 
 
