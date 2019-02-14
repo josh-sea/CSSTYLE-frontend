@@ -3,7 +3,7 @@ import { Row, Col, Button, Input, Modal } from 'react-materialize'
 import Iframe from 'react-iframe'
 const BASEURL = 'http://localhost:9000/';
 
-const SnippetView = ({styleSheet, snippetId, downloadCSS, snippets, generateStyleSheet}) => {
+const SnippetView = ({styleSheet, snippetId, snippets, generateStyleSheet}) => {
   const div = {
     height: '33vh',
     width: '100%',
@@ -38,8 +38,15 @@ const SnippetView = ({styleSheet, snippetId, downloadCSS, snippets, generateStyl
     cutText.select();
     document.execCommand("copy");
     window.Materialize.toast('Copied!', 3000);
-    cutText.value = ''
   }
+  const downloadCSS = e => {
+          const a = window.document.createElement('a');
+          a.href = window.URL.createObjectURL(new Blob([foundSnippet().css], {type: 'text/css'}));
+          a.download = `snippet_${snippetId}.css`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+      }
 
     return (
       <div>

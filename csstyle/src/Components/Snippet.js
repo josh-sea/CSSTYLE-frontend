@@ -7,7 +7,6 @@ const BASEURL = 'http://localhost:9000/';
 
 export default class Snippet extends Component {
   escapeHtml = (unsafe) => {
-    console.log(unsafe)
     return unsafe.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>").replace(/ /g, "&nbsp;")
   }
   unescapeHtml = (safe) => {
