@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Row, Col } from 'react-materialize'
+import { Input } from 'react-materialize'
 
 const Search = ({handleSearch, searchValue}) => (
 

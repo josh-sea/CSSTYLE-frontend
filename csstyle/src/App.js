@@ -6,10 +6,13 @@ import SnippetContainer from './Containers/SnippetContainer'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import SnippetView from './Components/SnippetView'
 
+const BASEURL = 'http://localhost:9000/';
+
 class App extends Component {
   state={
     snippets: [],
     userSnippets: [],
+    styleSheet: {},
     selectedSnippet: {},
     searchValue: '',
     snippetForm: {
@@ -25,7 +28,7 @@ class App extends Component {
     currentuser: null,
   }
   componentDidMount(){
-    fetch("http://localhost:9000/api/v1/snippets")
+    fetch(`${BASEURL}/api/v1/snippets`)
     .then(r=>r.json())
     .then(data=>{
       this.setState({
@@ -37,11 +40,11 @@ class App extends Component {
   handleSubmit = e => {
     e.persist()
     e.preventDefault()
-    fetch("http://localhost:9000/api/v1/snippets", {
+    fetch(`${BASEURL}/api/v1/snippets`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json"
+        "Accept": "application/json"
       },
       body: JSON.stringify({...this.state.snippetForm, user_id: this.state.currentuser.id})
     })
@@ -98,7 +101,7 @@ class App extends Component {
   }
 
   signIn = (e) => {
-    fetch('http://localhost:9000/api/v1/login', {
+    fetch(`${BASEURL}/api/v1/login`, {
       method: 'POST',
       headers:
       {
@@ -116,7 +119,7 @@ class App extends Component {
   }
 
   handleRegister = (e) => {
-    fetch('http://localhost:9000/api/v1/users', {
+    fetch(`${BASEURL}/api/v1/users`, {
       method: 'POST',
       headers:
       {
@@ -222,6 +225,21 @@ class App extends Component {
       this.setState({searchValue: e.target.innerHTML})
     }
 
+    generateStyleSheet = e => {
+      fetch(`${BASEURL}/api/v1/snippets/${e.target.id}`)
+      .then(r=>r.json())
+      .then(styleSheet=>{
+        this.setState({styleSheet})
+      })
+    }
+
+    downloadCSS = e => {
+      console.log(e.target.id);
+      fetch(`${BASEURL}/api/v1/snippets/${e.target.id}/stylesheet`)
+      .then(console.log)
+    }
+
+
   render() {
 
     return (
@@ -240,7 +258,7 @@ class App extends Component {
               />}
               <Route
                 exact path='/snippet/:id'
-                render={props => <SnippetView snippets={this.state.snippets} snippetId={parseInt(props.match.params.id)}/>}
+                render={props => <SnippetView downloadCSS={this.downloadCSS} styleSheet={this.state.styleSheet} generateStyleSheet={this.generateStyleSheet} snippets={this.state.snippets} snippetId={parseInt(props.match.params.id)}/>}
               />
             </Col>
           </Row>

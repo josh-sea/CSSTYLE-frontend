@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import Snippet from '../Components/Snippet'
-import { Collapsible, Row, Col } from 'react-materialize'
+import { Collapsible, Row } from 'react-materialize'
 import Search from '../Components/Search'
 
 const SnippetContainer = ({snippets, user, updateSnippet, clickTag, searchValue, handleSearch, deleteSnippet}) => (

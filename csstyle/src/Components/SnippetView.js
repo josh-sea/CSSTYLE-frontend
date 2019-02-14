@@ -1,11 +1,11 @@
 import React from 'react'
-import { Row, Col } from 'react-materialize'
+import { Row, Col, Button, Input, Modal } from 'react-materialize'
 import Iframe from 'react-iframe'
+const BASEURL = 'http://localhost:9000/';
 
-
-const SnippetView = ({snippetId, snippets}) => {
+const SnippetView = ({styleSheet, snippetId, downloadCSS, snippets, generateStyleSheet}) => {
   const div = {
-    height: '40vh',
+    height: '33vh',
     width: '100%',
     padding: '5%',
     background: 'rgb(48,48,48)',
@@ -16,9 +16,9 @@ const SnippetView = ({snippetId, snippets}) => {
   }
 
   const bottomDiv = {
-    height: '40vh',
+    height: '72vh',
     width: '100%',
-    marginTop: '2%',
+    marginTop: '5%',
     background: 'white',
     border: '5px solid teal',
     color: 'white',
@@ -28,30 +28,65 @@ const SnippetView = ({snippetId, snippets}) => {
 }
 
   const foundSnippet = () => {
-    let returnSnip = snippets.find(snip =>{
+    return snippets.find(snip =>{
       return snip.id === snippetId
     })
-    return returnSnip
   }
+
+  const copyPasta = (e) => {
+    const cutText = document.getElementById("copy-text");
+    cutText.select();
+    document.execCommand("copy");
+    window.Materialize.toast('Copied!', 3000);
+    cutText.value = ''
+  }
+
     return (
+      <div>
+        <Modal
+        id='bottom-modal'
+          header={`Stylesheet for your Snippet`}
+          bottomSheet
+          trigger={<Button>Get Stylesheet</Button>}>
+          <Row>
+            <Col s={6}>
+              <Input s={12} id="copy-text"  placeholder='Style Sheet' value={styleSheet.filename} />
+            </Col>
+            </Row>
+            <Row>
+              <Col s={3}>
+                <Button id={snippetId} onClick={generateStyleSheet}>Generate Stylesheet</Button>
+              </Col>
+              <Col s={3}>
+                <Button onClick={copyPasta}>Copy Link</Button>
+              </Col>
+            <Col s={3} offset={'s3'}>
+              <Button id={snippetId} onClick={downloadCSS}>Download Stylesheet</Button>
+            </Col>
+            </Row>
+        </Modal>
       <Row>
         <Col s={6}>
+          <Row>
+          <h6>HTML</h6>
           <div style={div}>
             {
             (snippets.length>0) && foundSnippet().html
             }
           </div>
+          </Row>
+          <Row>
+          <h6>CSS</h6>
+            <div style={div}>
+            {
+            (snippets.length>0) && foundSnippet().css
+            }
+            </div>
+          </Row>
         </Col>
         <Col s={6}>
-          <div style={div}>
-          {
-          (snippets.length>0) && foundSnippet().css
-          }
-          </div>
-        </Col>
-        <Col s={12}>
           <div style={bottomDiv}>
-          <Iframe url={`http://localhost:9000/api/v1/render/${snippetId}?height=whatever&width=whatever`}
+          <Iframe url={`${BASEURL}/api/v1/render/${snippetId}?height=whatever&width=whatever`}
             width="100%"
             height="100%"
             id="myId"
@@ -62,9 +97,15 @@ const SnippetView = ({snippetId, snippets}) => {
           </Iframe>
           </div>
         </Col>
+        </Row>
+        <Row>
+        <Col s={6}>
+
+        </Col>
+
 
       </Row>
-
+      </div>
 
     )
 }

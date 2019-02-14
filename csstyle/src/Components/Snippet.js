@@ -3,6 +3,7 @@ import {CollapsibleItem, CardPanel, Row, Col, Button} from 'react-materialize'
 import SnippetHeader from './SnippetHeader'
 import { Link } from 'react-router-dom'
 import ContentEditable from 'react-contenteditable'
+const BASEURL = 'http://localhost:9000/';
 
 export default class Snippet extends Component {
   escapeHtml = (unsafe) => {
@@ -31,7 +32,7 @@ export default class Snippet extends Component {
   }
 
   handleSubmit=()=>{
-    fetch(`http://localhost:9000/api/v1/snippets/${this.props.snippet.id}`, {
+    fetch(`${BASEURL}/api/v1/snippets/${this.props.snippet.id}`, {
       method: 'PATCH',
       headers:
       {
@@ -48,7 +49,7 @@ export default class Snippet extends Component {
   }
 
   handleDelete=()=>{
-    fetch(`http://localhost:9000/api/v1/snippets/${this.props.snippet.id}`, {
+    fetch(`${BASEURL}/api/v1/snippets/${this.props.snippet.id}`, {
       method: 'DELETE'
     })
     .then(r=>r.json())
