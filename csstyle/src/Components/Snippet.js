@@ -6,16 +6,20 @@ import ContentEditable from 'react-contenteditable'
 
 export default class Snippet extends Component {
   escapeHtml = (unsafe) => {
-    return unsafe.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/<br>/, "")
+    console.log(unsafe)
+    return unsafe.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>").replace(/ /g, "&nbsp;")
   }
-
   unescapeHtml = (safe) => {
-    return safe.replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+    return safe.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/<br>/g, "\n").replace(/&nbsp;/g, " ")
   }
 
   state={
-    snippetHTML: this.props.snippet.html,
+    snippetHTML: this.escapeHtml(this.props.snippet.html),
     snippetCSS: this.props.snippet.css
+  }
+
+  removeBr = (input) => {
+    return input.replace(/<br>/g, "\n")
   }
 
   handleChange= (event) => {
@@ -40,7 +44,7 @@ export default class Snippet extends Component {
       },
       body: JSON.stringify({
         html: this.unescapeHtml(this.state.snippetHTML),
-        css: this.state.snippetCSS
+        css: this.unescapeHtml(this.state.snippetCSS)
       })
     })
     .then(r=>r.json())
@@ -53,6 +57,13 @@ export default class Snippet extends Component {
     })
     .then(r=>r.json())
     .then(r=>this.props.deleteSnippet(r))
+  }
+
+  handleTab=(e)=>{
+    if(e.keyCode===9){
+      document.execCommand('insertHTML', false, '\u00a0\u00a0\u00a0\u00a0');
+      e.preventDefault();
+    }
   }
 
   slicer = (input) => {
@@ -90,11 +101,12 @@ export default class Snippet extends Component {
                 <h5 style={{margin: 'none'}}>HTML</h5>
                 <CardPanel style={controlOverflow} className="blue lighten-4 black-text show-code">
                   <ContentEditable
-                    html={this.escapeHtml(this.state.snippetHTML)} // innerHTML of the editable div
+                    html={this.state.snippetHTML} // innerHTML of the editable div
                     disabled={false}       // use true to disable editing
                     tagName='code' // Use a custom HTML tag (uses a div by default)
                     className='codebox snippethtml'
                     onChange={this.handleChange}
+                    onKeyDown={this.handleTab}
                   />
                 </CardPanel>
               </Col>
@@ -107,6 +119,7 @@ export default class Snippet extends Component {
                     tagName='code' // Use a custom HTML tag (uses a div by default)
                     className='codebox snippetcss'
                     onChange={this.handleChange}
+                    onKeyDown={this.handleTab}
                   />
                 </CardPanel>
               </Col>
@@ -123,6 +136,7 @@ export default class Snippet extends Component {
 }
 
 const controlOverflow ={
+  textAlign: 'left',
   overflow: 'scroll',
   maxHeight: '50vh',
   resize: 'both',
