@@ -1,0 +1,1 @@
+{"ast":null,"code":"// Copyright 2014 Simon Lydell\n// X11 (“MIT”) Licensed. (See LICENSE.)\nvar path = require(\"path\");\n\n\"use strict\";\n\nfunction urix(aPath) {\n  if (path.sep === \"\\\\\") {\n    return aPath.replace(/\\\\/g, \"/\").replace(/^[a-z]:\\/?/i, \"/\");\n  }\n\n  return aPath;\n}\n\nmodule.exports = urix;","map":null,"metadata":{},"sourceType":"script"}
