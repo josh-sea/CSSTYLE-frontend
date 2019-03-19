@@ -6,7 +6,7 @@ import SnippetContainer from './Containers/SnippetContainer'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import SnippetView from './Components/SnippetView'
 
-const BASEURL = 'https://csstyle-backend.herokuapp.com';
+const BASEURL = 'http://localhost:9000/';
 
 class App extends Component {
   state={
