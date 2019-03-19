@@ -3,7 +3,7 @@ import {CollapsibleItem, CardPanel, Row, Col, Button} from 'react-materialize'
 import SnippetHeader from './SnippetHeader'
 import { Link } from 'react-router-dom'
 import ContentEditable from 'react-contenteditable'
-const BASEURL = 'http://localhost:9000/';
+const BASEURL = 'https://csstyle-backend.herokuapp.com';
 
 export default class Snippet extends Component {
   escapeHtml = (unsafe) => {
