@@ -1,7 +1,7 @@
 import React from 'react'
 import { Row, Col, Button, Input, Modal } from 'react-materialize'
 import Iframe from 'react-iframe'
-const BASEURL = 'http://localhost:9000/';
+const BASEURL = 'https://csstyle-backend.herokuapp.com';
 
 const SnippetView = ({styleSheet, snippetId, snippets, generateStyleSheet}) => {
   const div = {
